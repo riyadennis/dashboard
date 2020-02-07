@@ -23,7 +23,7 @@ class Users extends React.Component{
             // Let's make sure to change the loading state to display the data
             .then(users => {
                 this.setState({
-                    users,
+                    users: users,
                     isLoading: false
                 });
             })

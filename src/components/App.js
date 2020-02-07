@@ -15,19 +15,10 @@ class App extends React.Component{
     }
 
     render(){
-        if (!this.state.isLoggedIn){
-            return(
-                <div style={{textAlign: "justify"}}>
-                    <Header/>
-                    <Login/>
-                    <Footer/>
-                </div>
-            )
-        }
         return(
             <div style={{textAlign: "justify"}}>
                 <Header/>
-                <Content/>
+                {this.state.isLoggedIn ? <Content/> : <Login/>}
                 <Footer/>
             </div>
         )
