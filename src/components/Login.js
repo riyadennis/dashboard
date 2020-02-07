@@ -15,10 +15,14 @@ class Login extends React.Component{
         this.handlePasswordChange= this.handlePasswordChange.bind(this)
     }
     handleEmailChange(event){
-        this.state.email = event.target.value
+        this.setState({
+                email: event.target.value
+        })
     }
     handlePasswordChange(event){
-        this.state.password = event.target.value
+        this.setState({
+            password: event.target.value
+        })
     }
     handleSubmit(event){
         console.log('form submitted: ' + this.state.email);
