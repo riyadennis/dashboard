@@ -1,59 +1,64 @@
 import React from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import LoginForm from "./LoginContainer"
 import axios from "axios";
+
 class Login extends React.Component{
     constructor(props) {
         super(props);
         this.state ={
-            userRegistered: false,
+            isLoggedIn: false,
             email: "",
             password: "",
         }
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleEmailChange= this.handleEmailChange.bind(this)
-        this.handlePasswordChange= this.handlePasswordChange.bind(this)
+        this.handleChange= this.handleChange.bind(this);
     }
-    handleEmailChange(event){
+    handleChange(event){
+        const {name,value} = event.target
         this.setState({
-                email: event.target.value
-        })
-    }
-    handlePasswordChange(event){
-        this.setState({
-            password: event.target.value
+            [name] : value
         })
     }
     handleSubmit(event){
         console.log('form submitted: ' + this.state.email);
-        axios
-            // The API we're requesting data from
-            .post("http://localhost:8081/login", )
+        axios.post('http://localhost:8081/login/',
+            {
+            email: this.state.email,
+            password: this.state.password
+            },{
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+            )
+            .then(function (response) {
+                if (response.status === 200) {
+                    console.log("log in successful")
+                }
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log("response data "+error.response.data);
+                    console.log("response status "+error.response.status);
+                    console.log("response headers "+error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log("request error"+error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
+            });
         event.preventDefault();
     }
     render() {
-        return(
-            <Form>
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={this.handleEmailChange}/>
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={this.handlePasswordChange}/>
-                </Form.Group>
-                <Form.Group controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
-                <Button variant="primary" type="button" onClick={this.handleSubmit}>
-                    Submit
-                </Button>
-            </Form>
-        )
+       return  <LoginForm email={this.state.email} password={this.state.password}
+                          handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
     }
 }
 
