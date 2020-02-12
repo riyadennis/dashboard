@@ -12,13 +12,18 @@ class App extends React.Component{
         this.state = {
             isLoggedIn: false
         }
+        this.handler = this.handler.bind(this)
     }
-
+    handler() {
+        this.setState({
+            isLoggedIn: true
+        })
+    }
     render(){
         return(
             <div style={{textAlign: "justify"}}>
                 <Header/>
-                {this.state.isLoggedIn ? <Content/> : <Login/>}
+                {this.state.isLoggedIn ? <Content/> : <Login handler = {this.handler}/>}
                 <Footer/>
             </div>
         )
