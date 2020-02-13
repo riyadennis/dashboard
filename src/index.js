@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom"
-import App from "./components/App"
+import DashBoard from "./DashBoard"
 
-ReactDOM.render(<App/>,
+ReactDOM.render(<DashBoard/>,
     document.getElementById("root"))

@@ -1,12 +1,12 @@
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './bootstrap.min.css';
 
-import Content from "./Content";
-import Footer from "./Footer"
-import Header from "./Header";
-import Login from "./Login";
+import Content from "./components/Content";
+import Footer from "./components/Footer"
+import Header from "./components/Header";
+import Login from "./components/Login";
 
-class App extends React.Component{
+class DashBoard extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -29,4 +29,4 @@ class App extends React.Component{
         )
     }
 }
-export default App
+export default DashBoard
