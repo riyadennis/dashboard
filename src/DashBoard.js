@@ -10,20 +10,24 @@ class DashBoard extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            isLoggedIn: false
+            isLoggedIn: false,
+            message:"",
+            token: "",
         }
         this.handler = this.handler.bind(this)
     }
-    handler() {
+    handler(data) {
         this.setState({
-            isLoggedIn: true
+            isLoggedIn: true,
+            message:data.message,
+            token: data.token,
         })
     }
     render(){
         return(
             <div style={{textAlign: "justify"}}>
                 <Header/>
-                {this.state.isLoggedIn ? <Content/> : <Login handler = {this.handler}/>}
+                {this.state.isLoggedIn ? <Content userData = {this.state} /> : <Login handler = {this.handler}/>}
                 <Footer/>
             </div>
         )

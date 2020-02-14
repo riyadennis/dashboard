@@ -12,7 +12,7 @@ function ApiLogin(state, props){
         }
     )
         .then(function (response) {
-            props.handler()
+            props.handler(response.data)
         })
         .catch(function (error) {
             HandleError(error)

@@ -28,7 +28,7 @@ class Content extends React.Component{
                         <Card.Body>
                             <Card.Title> <TimeOfDay/></Card.Title>
                             <Card.Text>
-                                User information to be fetched from an api
+                                {this.props.userData.message}
                             </Card.Text>
                             <Button variant="primary">Go somewhere</Button>
                         </Card.Body>
