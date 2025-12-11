@@ -1,5 +1,5 @@
 import React from "react";
-import './bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Content from "./components/Content";
 import Footer from "./components/Footer"
@@ -28,7 +28,7 @@ class DashBoard extends React.Component{
             <div style={{textAlign: "justify"}}>
                 <Header/>
                 {this.state.isLoggedIn ? <Content userData = {this.state} /> : <Login handler = {this.handler}/>}
-                <Footer/>
+                <Footer/>   
             </div>
         )
     }
