@@ -1,35 +1,71 @@
-import React from "react";
+import React, { useState } from "react";
 import LoginForm from "./LoginContainer"
-import ApiLogin from "./ApiLogin";
+import { gql } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 
-class Login extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state ={
-            isLoggedIn: false,
-            email: "",
-            password: "",
+const LOGIN = gql`
+ mutation Login($input: LoginInput!){
+	Login(input: $input){
+		status
+		accessToken
+		expiry
+		tokenType
+		lastRefresh
+		tokenTTL
+	}
+}
+`;
+
+function Login(props) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [login, { data, loading, error }] = useMutation(LOGIN, {
+        onCompleted: (data) => {
+            if (data?.Login) {
+                // Handle successful login
+                console.log("Login successful:", data.Login);
+                // You can call props.handler here if needed
+                if (props.handler) {
+                    props.handler(data.Login);
+                }
+            }
+        },
+        onError: (error) => {
+            console.error("Login error:", error);
         }
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange= this.handleChange.bind(this);
-    }
-    handleChange(event){
-        const {name,value} = event.target
-        this.setState({
-            [name] : value
-        })
-    }
-    handleSubmit(event){
-        // call login endpoint
-        ApiLogin(this.state, this.props);
-        event.preventDefault();
-    }
+    });
 
-    render() {
-       return  <LoginForm email={this.state.email} password={this.state.password}
-                          handler = {this.handler}  handleChange={this.handleChange}
-                          handleSubmit={this.handleSubmit}/>
-    }
+    const handleChange = (event) => {
+        const {name, value} = event.target;
+        if (name === "email") {
+            setEmail(value);
+        } else if (name === "password") {
+            setPassword(value);
+        }
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // call login endpoint
+        login({
+            variables: {
+                input: {
+                    email: email,
+                    password: password
+                }
+            }
+        });
+    };
+
+    return <LoginForm
+        email={email}
+        password={password}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        loading={loading}
+        error={error}
+    />;
 }
 
 export default Login
