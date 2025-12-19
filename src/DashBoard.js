@@ -1,6 +1,5 @@
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Container from "react-bootstrap/Container";
 import Content from "./components/Content";
 import Footer from "./components/Footer"
 import Header from "./components/Header";
@@ -10,7 +9,7 @@ class DashBoard extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            isLoggedIn: false,
+            isLoggedIn: localStorage.getItem('isLoggedIn') || false,
             message:"",
             token: "",
         }
@@ -25,11 +24,14 @@ class DashBoard extends React.Component{
     }
     render(){
         return(
+            <Container className="p-3">
             <div style={{textAlign: "justify"}}>
-                <Header/>
-                {this.state.isLoggedIn ? <Content userData = {this.state} /> : <Login handler = {this.handler}/>}
+            <Header/>
+                {this.state.isLoggedIn ? <Content userData = {this.state}/> : <Login handler = {this.handler}/>}
                 <Footer/>   
             </div>
+            </Container>
+            
         )
     }
 }
