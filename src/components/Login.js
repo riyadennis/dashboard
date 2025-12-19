@@ -25,6 +25,7 @@ function Login(props) {
             if (data?.Login) {
                 // Handle successful login
                 console.log("Login successful:", data.Login);
+                localStorage.setItem('isLoggedIn', true);
                 // You can call props.handler here if needed
                 if (props.handler) {
                     props.handler(data.Login);
