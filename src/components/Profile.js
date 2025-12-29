@@ -6,8 +6,6 @@ function TimeOfDay(){
     let timeOfDay
 
     const styles = {
-        color: "#FF8CC0",
-        backgroundColor: "#FFF000",
     }
 
     if (hours <12){
