@@ -5,37 +5,41 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Users from "./Users"
 import TimeOfDay from "./Profile";
+import FileUploader from "./FileUploader";
 
 class Content extends React.Component{
     render() {
         return(
             <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
                 <Tab eventKey="home" title="Home">
-                    <Card style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src="holder.js/100px180" />
-                        <Card.Body>
+                    <Card>
+                        {/* <Card.Body>
                             <Card.Title>Users List</Card.Title>
                             <Card.Text>
                                 <Users/>
                             </Card.Text>
                             <Button variant="primary">Go somewhere</Button>
+                        </Card.Body> */}
+                        <Card.Body>
+                            <Card.Title>Upload File</Card.Title>
+                            <Card.Text>
+                                <FileUploader/>
+                            </Card.Text>
                         </Card.Body>
                     </Card>
                 </Tab>
                 <Tab eventKey="profile" title="Profile">
-                    <Card style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src="holder.js/100px180" />
+                    <Card>
                         <Card.Body>
                             <Card.Title> <TimeOfDay/></Card.Title>
-                            <Card.Text>
+                            <Card.Text style={{ color: "Background"}}>
                                 {this.props.userData.message}
                             </Card.Text>
-                            <Button variant="primary">Go somewhere</Button>
                         </Card.Body>
                     </Card>
                 </Tab>
                 <Tab eventKey="contact" title="Contact" disabled>
-                    <Card style={{ width: '18rem' }}>
+                    <Card>
                         <Card.Img variant="top" src="holder.js/100px180" />
                         <Card.Body>
                             <Card.Title>Card Title</Card.Title>
