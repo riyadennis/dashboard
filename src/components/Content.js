@@ -3,7 +3,6 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Users from "./Users"
 import TimeOfDay from "./Profile";
 import FileUploader from "./FileUploader";
 
@@ -13,13 +12,6 @@ class Content extends React.Component{
             <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
                 <Tab eventKey="home" title="Home">
                     <Card>
-                        {/* <Card.Body>
-                            <Card.Title>Users List</Card.Title>
-                            <Card.Text>
-                                <Users/>
-                            </Card.Text>
-                            <Button variant="primary">Go somewhere</Button>
-                        </Card.Body> */}
                         <Card.Body>
                             <Card.Title>Upload File</Card.Title>
                             <Card.Text>
@@ -32,7 +24,7 @@ class Content extends React.Component{
                     <Card>
                         <Card.Body>
                             <Card.Title> <TimeOfDay/></Card.Title>
-                            <Card.Text style={{ color: "Background"}}>
+                            <Card.Text>
                                 {this.props.userData.message}
                             </Card.Text>
                         </Card.Body>
