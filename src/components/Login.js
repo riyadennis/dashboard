@@ -26,9 +26,13 @@ function Login(props) {
                 // Handle successful login
                 console.log("Login successful:", data.Login);
                 localStorage.setItem('isLoggedIn', true);
+                localStorage.setItem('accessToken', data.Login.accessToken);
                 // You can call props.handler here if needed
                 if (props.handler) {
-                    props.handler(data.Login);
+                    props.handler({
+                        ...data.Login,
+                        token: data.Login.accessToken
+                    });
                 }
             }
         },

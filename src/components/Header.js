@@ -50,13 +50,23 @@ class Header extends React.Component{
                         </NavDropdown>
                     </Nav>
                     <Nav>
-                        <Button 
-                            variant="outline-light" 
+                        <Button
+                            variant="outline-light"
                             onClick={this.toggleTheme}
                             size="sm"
+                            className="me-2"
                         >
                             {this.state.theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
                         </Button>
+                        {this.props.isLoggedIn && (
+                            <Button
+                                variant="outline-danger"
+                                onClick={this.props.logout}
+                                size="sm"
+                            >
+                                Logout
+                            </Button>
+                        )}
                     </Nav>
                     <Form className="d-flex">
                         <FormControl type="text" placeholder="Search" className="me-2" />
