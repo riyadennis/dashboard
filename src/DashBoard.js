@@ -14,6 +14,7 @@ class DashBoard extends React.Component{
             token: "",
         }
         this.handler = this.handler.bind(this)
+        this.logout = this.logout.bind(this)
     }
     handler(data) {
         this.setState({
@@ -22,16 +23,29 @@ class DashBoard extends React.Component{
             token: data.token,
         })
     }
+    logout() {
+        // Clear localStorage
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userID');
+        localStorage.removeItem('userEmail');
+        // Reset state
+        this.setState({
+            isLoggedIn: false,
+            message: "",
+            token: "",
+        })
+    }
     render(){
         return(
             <Container className="p-3">
             <div style={{textAlign: "justify"}}>
-            <Header/>
+            <Header isLoggedIn={this.state.isLoggedIn} logout={this.logout}/>
                 {this.state.isLoggedIn ? <Content userData = {this.state}/> : <Login handler = {this.handler}/>}
-                <Footer/>   
+                <Footer/>
             </div>
             </Container>
-            
+
         )
     }
 }

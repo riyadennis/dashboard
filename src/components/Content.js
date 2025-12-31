@@ -6,6 +6,9 @@ import Button from "react-bootstrap/Button";
 import TimeOfDay from "./Profile";
 import FileUploader from "./FileUploader";
 
+
+
+
 class Content extends React.Component{
     render() {
         return(
