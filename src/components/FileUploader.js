@@ -65,6 +65,7 @@ function FileUploader() {
             await axios.post("http://localhost:8090/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    "Authorization": "Bearer "+localStorage.getItem("accessToken")
                 },
                 onUploadProgress: (progressEvent) => {
                     const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
