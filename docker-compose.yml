@@ -1,35 +1,21 @@
-# docker-compose.yml
-
-version: '3.7'
-
+name: react-app
 services:
   dashboard:
     container_name: dashboard
-    image: riyadennis/dashboard:latest
+    restart: on-failure
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /dashboard
+        - action: rebuild
+          path: package.json
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
-      - NODE_ENV=production
-    command: npm start
+      - NODE_ENV=development
     ports:
       - 3000:3000
-    volumes:
-      - .:/dashboard
-    networks:
-      - backend
-  identity-server:
-    container_name: identity-server
-    image: riyadennis/identity-server:latest
-    volumes:
-      - code_volume:/identity-server
-    ports:
-      - 8081:8081
-    restart: on-failure
-    networks:
-      - backend
-networks:
-  backend:
-    driver: bridge
-volumes:
-  init: {}
-  code_volume: {}
 
 
