@@ -1,7 +1,7 @@
-name: react-app
+name: react
 services:
   dashboard:
-    container_name: dashboard
+    container_name: dashboard-app
     restart: on-failure
     develop:
       watch:
@@ -15,6 +15,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - NODE_ENV=development
+      - REACT_APP_GRAPHQL_URI=http://localhost:8097/graphql
     ports:
       - 3000:3000
 
