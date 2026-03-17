@@ -33,28 +33,18 @@ This will start the app (by default) at `http://localhost:3000` in your browser.
 ```mermaid
 graph TD
   U[User] --> B[Browser]
-  B -->|Loads UI| FE[Dashboard React App (3000)]
-
-  FE -->|Auth| AUTH[Auth service]
-  AUTH --> FE
-
-  FE -->|GraphQL| GQL[GraphQL API (8097 /graphql)]
+  B -->|Loads UI| FE[Dashboard:3000]
+  
+  FE -->|Auth Request| AUTH[Identity]
+  AUTH -->|Token| FE
+  
+  FE -->|GraphQL with Token| GQL[Identity:8097 /graphql]
   GQL -->|Data| FE
 
-  FE -->|Upload| UP[REST Upload API (8090 /upload)]
+  FE -->|Upload with Token| UP[Ingest:8090 /upload]
   UP -->|Result| FE
-
+  
   FE -->|Renders UI| B
-```
-
-If Mermaid rendering is unavailable in your GitHub view, the same flow in text:
-
-```text
-User -> Browser -> Dashboard React App (:3000)
-  -> Auth service -> Dashboard React App
-  -> GraphQL API (:8097/graphql) -> Dashboard React App
-  -> REST Upload API (:8090/upload) -> Dashboard React App
-  -> Browser
 ```
 
 ## GraphQL server dependency
