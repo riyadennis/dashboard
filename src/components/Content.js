@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import TimeOfDay from "./Profile";
 import FileUploader from "./FileUploader";
+import PolicyCreator from "./PolicyCreator";
 
 
 
@@ -19,6 +20,16 @@ class Content extends React.Component{
                             <Card.Title>Upload File</Card.Title>
                             <Card.Text>
                                 <FileUploader/>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Tab>
+                <Tab eventKey="policies" title="Policies">
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>Create Policy</Card.Title>
+                            <Card.Text>
+                                <PolicyCreator/>
                             </Card.Text>
                         </Card.Body>
                     </Card>

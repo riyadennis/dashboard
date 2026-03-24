@@ -1,10 +1,16 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import React from "react";
 
 function LoginForm(props) {
     return(
         <Form style={{border: "1px solid #000", padding: "30px", margin: "10px", borderRadius: "10px", width: "50%", marginLeft: "auto", marginRight: "auto"}}>
+            {props.error && (
+                <Alert variant="danger" dismissible onClose={props.onDismissError || (() => {})}>
+                    {props.error.message}
+                </Alert>
+            )}
             <Form.Group controlId="formBasicEmail" style={{marginBottom: "10px"}}>
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" name="email" value={props.email}
@@ -22,8 +28,8 @@ function LoginForm(props) {
             <Form.Group controlId="formBasicCheckbox" style={{margin: "10px"}}>
                 <Form.Check type="checkbox" label="Check me out" />
             </Form.Group>
-            <Button variant="primary" type="button" onClick={props.handleSubmit}>
-                Submit
+            <Button variant="primary" type="button" onClick={props.handleSubmit} disabled={props.loading}>
+                {props.loading ? "Signing in…" : "Submit"}
             </Button>
         </Form>
     )

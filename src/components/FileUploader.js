@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Card, Button, ProgressBar, Alert } from "react-bootstrap";
 import axios from "axios";
+import { UPLOAD_URL } from "../config";
 
 function FileUploader() {
     const [file, setFile] = useState(null);
@@ -62,7 +63,7 @@ function FileUploader() {
         formData.append("file", file);
 
         try {
-            await axios.post("http://localhost:8090/upload", formData, {
+            await axios.post(UPLOAD_URL, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     "Authorization": "Bearer "+localStorage.getItem("accessToken")
@@ -76,7 +77,11 @@ function FileUploader() {
             setUploadStatus("completed");
         } catch (error) {
             setUploadStatus("error");
-            setErrorMessage(error.response?.data?.message || "Upload failed. Please try again.");
+            setErrorMessage(
+                error.response?.data?.message ||
+                error.message ||
+                "Upload failed. Please try again."
+            );
             console.error("Upload error:", error);
         }
     };
