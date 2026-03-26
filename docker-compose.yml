@@ -1,8 +1,150 @@
 name: react
+
+networks:
+  app-network:
+    driver: bridge
+
 services:
+
+  # ── Backend services ──────────────────────────────────────────────────────
+
+  postgres:
+    image: postgres:16-alpine
+    restart: on-failure
+    environment:
+      POSTGRES_DB: pbac
+      POSTGRES_USER: pbac
+      POSTGRES_PASSWORD: pbac
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pbac"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pbac:
+    image: riyadennis/pbac:latest
+    platform: linux/amd64
+    container_name: pbac-service
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV=dev
+      - PORT=8080
+      - DATABASE_URL=postgres://pbac:pbac@postgres:5432/pbac?sslmode=disable
+      - MIGRATION_PATH=/home/webuser/migrations
+    networks:
+      - app-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  mysql-server:
+    image: mysql:8.0
+    restart: on-failure
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=identity-server
+      - MYSQL_USER=identity-server
+      - MYSQL_PASSWORD=password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  identity-gql:
+    image: riyadennis/identity-gql-server:latest
+    platform: linux/amd64
+    container_name: identity-gql-server
+    restart: on-failure
+    ports:
+      - "8092:8097"
+    networks:
+      - app-network
+    environment:
+      - ENV=dev
+      - GRAPHQL_PORT=8097
+      - MYSQL_USERNAME=identity-server
+      - MYSQL_PASSWORD=password
+      - MYSQL_HOST=mysql-server
+      - MYSQL_DATABASE=identity-server
+      - MYSQL_PORT=3306
+      - ISSUER=open source
+      # needs trailing slash
+      - KEY_PATH=/var/folders/
+      - MIGRATION_PATH=/home/webuser/migrations
+    depends_on:
+      - pbac
+      - mysql-server
+
+  minio:
+    container_name: minio
+    image: quay.io/minio/minio:latest
+    restart: on-failure
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: ["server", "/data", "--console-address", ":9001"]
+    volumes:
+      - ~/minio/data:/data
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    networks:
+      - app-network
+
+  ingestion:
+    image: riyadennis/ingestion-rest-service:latest
+    platform: linux/amd64
+    container_name: ingestion-rest-service
+    restart: on-failure
+    ports:
+      - "8091:8091"
+    environment:
+      - LOG_LEVEL=debug
+      - REST_PORT=8091
+      - STORAGE_ENDPOINT=minio:9000
+      - STORAGE_USE_SSL=false
+      - STORAGE_ACCESS_KEY=admin
+      - STORAGE_SECRET_KEY=password123
+      - STORAGE_BUCKET_NAME=test
+      - IDENTITY_URL=host.docker.internal:8096
+    networks:
+      - app-network
+    depends_on:
+      - minio
+
+  # ── Frontend ──────────────────────────────────────────────────────────────
+
   dashboard:
     container_name: dashboard-app
     restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # REACT_APP_* vars are baked into the JS bundle at build time (browser-side),
+    # so they must point to localhost:<host-port>, not the Docker service name.
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_GRAPHQL_URI=http://localhost:8092/graphql
+      - REACT_APP_UPLOAD_URL=http://localhost:8091/upload
+      - REACT_APP_PBAC_URL=http://localhost:8080
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      - pbac
+      - identity-gql
+      - ingestion
     develop:
       watch:
         - action: sync
@@ -10,13 +152,7 @@ services:
           target: /dashboard
         - action: rebuild
           path: package.json
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - NODE_ENV=development
-      - REACT_APP_GRAPHQL_URI=http://localhost:8097/graphql
-    ports:
-      - 3000:3000
 
-
+volumes:
+  mysql-data:
+  pgdata:
