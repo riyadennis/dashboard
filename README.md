@@ -55,7 +55,7 @@ This app expects a GraphQL server to be available at:
 
 If you run the app via Docker Compose, the frontend is configured with:
 
-- `REACT_APP_GRAPHQL_URI=http://localhost:8097/graphql`
+- `REACT_APP_IDENTITY_URI=http://localhost:8097/graphql`
 
 ## REST upload dependency
 
