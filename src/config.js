@@ -6,8 +6,8 @@ const requireEnv = (value, name) => {
 };
 
 export const GRAPHQL_URI = requireEnv(
-  process.env.REACT_APP_GRAPHQL_URI,
-  "REACT_APP_GRAPHQL_URI"
+  process.env.REACT_APP_IDENTITY_URI,
+  "REACT_APP_IDENTITY_URI"
 );
 
 export const UPLOAD_URL = requireEnv(

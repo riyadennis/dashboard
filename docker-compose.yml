@@ -134,7 +134,7 @@ services:
     # so they must point to localhost:<host-port>, not the Docker service name.
     environment:
       - NODE_ENV=development
-      - REACT_APP_GRAPHQL_URI=http://localhost:8092/graphql
+      - REACT_APP_IDENTITY_URI=http://localhost:8092/graphql
       - REACT_APP_UPLOAD_URL=http://localhost:8091/upload
       - REACT_APP_PBAC_URL=http://localhost:8080
     ports:
