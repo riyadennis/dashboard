@@ -66,12 +66,12 @@ services:
     container_name: identity-gql-server
     restart: on-failure
     ports:
-      - "8092:8097"
+      - "8092:8092"
     networks:
       - app-network
     environment:
       - ENV=dev
-      - GRAPHQL_PORT=8097
+      - GRAPHQL_PORT=8092
       - MYSQL_USERNAME=identity-server
       - MYSQL_PASSWORD=password
       - MYSQL_HOST=mysql-server

@@ -64,6 +64,7 @@ function Login(props) {
             loading={loading}
             error={error && !errorDismissed ? { message: error.message } : null}
             onDismissError={() => setErrorDismissed(true)}
+            onRegisterClick={props.onRegisterClick}
         />
     );
 }
