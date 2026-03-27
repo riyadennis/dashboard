@@ -31,6 +31,13 @@ function LoginForm(props) {
             <Button variant="primary" type="button" onClick={props.handleSubmit} disabled={props.loading}>
                 {props.loading ? "Signing in…" : "Submit"}
             </Button>
+
+            <div style={{ marginTop: "15px", fontSize: "0.9rem" }}>
+                Don't have an account?{" "}
+                <span onClick={props.onRegisterClick} style={{ cursor: "pointer", color: "#0d6efd", textDecoration: "underline" }}>
+                    Register
+                </span>
+            </div>
         </Form>
     )
 }
