@@ -59,6 +59,35 @@ services:
       - mysql-data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u identity-server -ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  identity-grpc:
+    image: riyadennis/identity-grpc-server:latest
+    platform: linux/amd64
+    container_name: identity-grpc-server
+    restart: on-failure
+    networks:
+      - app-network
+    ports:
+      - "8096:8096"
+    environment:
+      - ENV=dev
+      - GRPC_PORT=8096
+      - MYSQL_USERNAME=identity-server
+      - MYSQL_PASSWORD=password
+      - MYSQL_HOST=mysql-server
+      - MYSQL_DATABASE=identity-server
+      - MYSQL_PORT=3306
+      - ISSUER=open source
+      - KEY_PATH=/var/folders/
+      - MIGRATION_PATH=/home/webuser/migrations
+    depends_on:
+      mysql-server:
+        condition: service_healthy
 
   identity-gql:
     image: riyadennis/identity-gql-server:latest
@@ -82,11 +111,11 @@ services:
       - KEY_PATH=/var/folders/
       - MIGRATION_PATH=/home/webuser/migrations
     depends_on:
-      - pbac
-      - mysql-server
+      mysql-server:
+        condition: service_healthy
 
   minio:
-    container_name: minio
+    container_name: dashboard-minio
     image: quay.io/minio/minio:latest
     restart: on-failure
     ports:
@@ -100,6 +129,11 @@ services:
       MINIO_ROOT_PASSWORD: password123
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   ingestion:
     image: riyadennis/ingestion-rest-service:latest
@@ -116,11 +150,13 @@ services:
       - STORAGE_ACCESS_KEY=admin
       - STORAGE_SECRET_KEY=password123
       - STORAGE_BUCKET_NAME=test
-      - IDENTITY_URL=host.docker.internal:8096
+      # identity-grpc runs in this compose on port 8096 — use its service name.
+      - IDENTITY_URL=identity-grpc:8096
     networks:
       - app-network
     depends_on:
       - minio
+      - identity-grpc
 
   # ── Frontend ──────────────────────────────────────────────────────────────
 

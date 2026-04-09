@@ -58,6 +58,18 @@ function RegisterForm(props) {
                 />
             </Form.Group>
 
+            <Form.Group controlId="regPassword" style={{ marginBottom: "10px" }}>
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                    type="password"
+                    name="password"
+                    value={fields.password}
+                    placeholder="Password"
+                    onChange={handleChange}
+                    required
+                />
+            </Form.Group>
+
             <Form.Group controlId="regCompany" style={{ marginBottom: "10px" }}>
                 <Form.Label>Company</Form.Label>
                 <Form.Control
