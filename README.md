@@ -14,7 +14,6 @@ Landing app from where we can call multiple clients.
 From the project root:
 
 ```bash
-cd /Users/riyadennis/go/src/github.com/riyadennis/dashboard
 npm install
 ```
 
@@ -31,20 +30,28 @@ This will start the app (by default) at `http://localhost:3000` in your browser.
 ## Application flow
 
 ```mermaid
-graph TD
-  U[User] --> B[Browser]
-  B -->|Loads UI| FE[Dashboard:3000]
-  
-  FE -->|Auth Request| AUTH[Identity]
-  AUTH -->|Token| FE
-  
-  FE -->|GraphQL with Token| GQL[Identity:8097 /graphql]
-  GQL -->|Data| FE
+sequenceDiagram
+  actor User
+  participant Browser
+  participant Dashboard as Dashboard :3000
+  participant Identity as Identity GraphQL :8097
+  participant Ingest as Ingest :8091
 
-  FE -->|Upload with Token| UP[Ingest:8090 /upload]
-  UP -->|Result| FE
-  
-  FE -->|Renders UI| B
+  User->>Browser: Open app
+  Browser->>Dashboard: Load UI
+  Dashboard-->>Browser: React bundle
+
+  User->>Browser: Submit login
+  Browser->>Identity: POST /graphql (Login mutation)
+  Identity-->>Browser: accessToken + user info
+
+  User->>Browser: View profile
+  Browser->>Identity: POST /graphql (Me query) + Bearer token
+  Identity-->>Browser: id, email, name, picture, emailVerified, role
+
+  User->>Browser: Upload file
+  Browser->>Ingest: POST /upload + Bearer token
+  Ingest-->>Browser: Upload result
 ```
 
 ## GraphQL server dependency
