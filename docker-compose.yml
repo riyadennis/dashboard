@@ -85,6 +85,8 @@ services:
       - ISSUER=open source
       - KEY_PATH=/var/folders/
       - MIGRATION_PATH=/home/webuser/migrations
+    volumes:
+      - identity_key_data:/var/folders
     depends_on:
       mysql-server:
         condition: service_healthy
@@ -95,12 +97,12 @@ services:
     container_name: identity-gql-server
     restart: on-failure
     ports:
-      - "8092:8092"
+      - "8097:8097"
     networks:
       - app-network
     environment:
       - ENV=dev
-      - GRAPHQL_PORT=8092
+      - GRAPHQL_PORT=8097
       - MYSQL_USERNAME=identity-server
       - MYSQL_PASSWORD=password
       - MYSQL_HOST=mysql-server
@@ -110,6 +112,8 @@ services:
       # needs trailing slash
       - KEY_PATH=/var/folders/
       - MIGRATION_PATH=/home/webuser/migrations
+    volumes:
+      - identity_key_data:/var/folders
     depends_on:
       mysql-server:
         condition: service_healthy
@@ -170,7 +174,7 @@ services:
     # so they must point to localhost:<host-port>, not the Docker service name.
     environment:
       - NODE_ENV=development
-      - REACT_APP_IDENTITY_URI=http://localhost:8092/graphql
+      - REACT_APP_IDENTITY_URI=http://localhost:8097/graphql
       - REACT_APP_UPLOAD_URL=http://localhost:8091/upload
       - REACT_APP_PBAC_URL=http://localhost:8080
     ports:
@@ -192,3 +196,4 @@ services:
 volumes:
   mysql-data:
   pgdata:
+  identity_key_data:
