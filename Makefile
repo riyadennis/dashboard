@@ -7,3 +7,7 @@ docker-run:
 
 docker-push:
 	docker push riyadennis/dashboard:latest
+
+docker-seed:
+	docker exec -i react-mysql-server-1 \
+    	mysql -u identity-server -ppassword identity-server < docker/mysql/seed.sql
