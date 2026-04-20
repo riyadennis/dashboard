@@ -62,3 +62,20 @@ If you run the app via Docker Compose, the frontend is configured with:
 File uploads expect a REST endpoint to be available at:
 
 - `http://localhost:8090/upload`
+
+## Test accounts
+
+> For development only. Seed these with `docker/mysql/seed.sql` after running migrations.
+
+| Name | Email | Password | Role | User ID |
+|---|---|---|---|---|
+| Admin User | admin@dashboard.com | Admin123! | ADMIN | 00000000-0000-0000-0000-000000000001 |
+| Alice Smith | alice@dashboard.com | User123! | USER | 00000000-0000-0000-0000-000000000002 |
+| Bob Jones | bob@dashboard.com | User456! | USER | 00000000-0000-0000-0000-000000000003 |
+
+To seed:
+
+```bash
+docker exec -i react-mysql-server-1 \
+  mysql -u identity-server -ppassword identity-server < docker/mysql/seed.sql
+```
