@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Architecture</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    header h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: 0.02em; }
+    header .subtitle { font-size: 0.8rem; color: #a0aec0; }
+
+    .banner {
+      padding: 18px 32px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #e9edf5;
+      color: #1a1a2e;
+      border-bottom: 3px solid #1a1a2e;
+    }
+
+    main { max-width: 1100px; margin: 32px auto; padding: 0 24px; }
+
+    h2 {
+      font-size: 1rem; font-weight: 600; color: #4a5568;
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-bottom: 32px;
+    }
+
+    .diagram-card {
+      border-top: 4px solid #1a1a2e;
+    }
+
+    .diagram-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .service-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      border-top: 4px solid #4a5568;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .service-name { font-weight: 600; font-size: 0.9rem; }
+    .service-port {
+      font-size: 0.78rem; font-weight: 700; padding: 2px 8px;
+      border-radius: 20px; background: #e9edf5; color: #1a1a2e;
+      display: inline-block; width: fit-content;
+    }
+    .service-desc { font-size: 0.8rem; color: #718096; }
+
+    footer {
+      text-align: center; padding: 24px;
+      font-size: 0.75rem; color: #a0aec0;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Dashboard Architecture</h1>
+  <span class="subtitle">Application sequence &amp; service overview</span>
+</header>
+
+<div class="banner">Application Flow</div>
+
+<main>
+
+  <h2>Sequence Diagram</h2>
+  <div class="card diagram-card">
+    <img src="./Sequence.png" alt="Application sequence diagram" />
+  </div>
+
+  <h2>Services</h2>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <span class="service-name">Dashboard</span>
+      <span class="service-port">:3000</span>
+      <span class="service-desc">React frontend</span>
+    </div>
+
+    <div class="service-card">
+      <span class="service-name">Identity GraphQL</span>
+      <span class="service-port">:8097</span>
+      <span class="service-desc">Authentication &amp; user queries</span>
+    </div>
+
+    <div class="service-card">
+      <span class="service-name">Identity gRPC</span>
+      <span class="service-port">:8096</span>
+      <span class="service-desc">gRPC login / token generation</span>
+    </div>
+
+    <div class="service-card">
+      <span class="service-name">Ingest / Upload</span>
+      <span class="service-port">:8091</span>
+      <span class="service-desc">File upload service</span>
+    </div>
+
+    <div class="service-card">
+      <span class="service-name">PBAC</span>
+      <span class="service-port">:8080</span>
+      <span class="service-desc">Policy management</span>
+    </div>
+
+    <div class="service-card">
+      <span class="service-name">MinIO</span>
+      <span class="service-port">:9000 / :9001</span>
+      <span class="service-desc">Object storage</span>
+    </div>
+
+    <div class="service-card">
+      <span class="service-name">MySQL</span>
+      <span class="service-port">:3306</span>
+      <span class="service-desc">Identity database</span>
+    </div>
+
+    <div class="service-card">
+      <span class="service-name">PostgreSQL</span>
+      <span class="service-port">:5432</span>
+      <span class="service-desc">PBAC database</span>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>Dashboard Architecture Reference</footer>
+
+</body>
+</html>

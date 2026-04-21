@@ -144,7 +144,7 @@
 
 <header>
   <h1>Dashboard Health Report</h1>
-  <span class="timestamp">Checked at: Thu, 09 Apr 2026 14:55:08 GMT</span>
+  <span class="timestamp">Checked at: Tue, 21 Apr 2026 13:38:05 GMT</span>
 </header>
 
 <div class="banner unhealthy">
@@ -181,7 +181,7 @@
     </div>
     <div class="meta-row">
       <span class="meta-label">Response time</span>
-      <span class="meta-value">19 ms</span>
+      <span class="meta-value">38 ms</span>
     </div>
     <div class="meta-row">
       <span class="meta-label">HTTP status</span>
@@ -206,7 +206,7 @@
     </div>
     <div class="meta-row">
       <span class="meta-label">Response time</span>
-      <span class="meta-value">13 ms</span>
+      <span class="meta-value">31 ms</span>
     </div>
     <div class="meta-row">
       <span class="meta-label">HTTP status</span>
@@ -231,7 +231,7 @@
     </div>
     <div class="meta-row">
       <span class="meta-label">Response time</span>
-      <span class="meta-value">29 ms</span>
+      <span class="meta-value">37 ms</span>
     </div>
     <div class="meta-row">
       <span class="meta-label">HTTP status</span>
@@ -240,10 +240,10 @@
       
     </div>
 
-    <div class="card healthy">
+    <div class="card unhealthy">
       <div class="card-header">
         <span class="card-name">Identity gRPC server</span>
-        <span class="badge healthy">Healthy</span>
+        <span class="badge unhealthy">Unhealthy</span>
       </div>
       <div class="card-meta">
     <div class="meta-row">
@@ -256,19 +256,19 @@
     </div>
     <div class="meta-row">
       <span class="meta-label">Response time</span>
-      <span class="meta-value">23 ms</span>
+      <span class="meta-value">30 ms</span>
     </div>
     <div class="meta-row">
       <span class="meta-label">gRPC code</span>
-      <span class="meta-value">0 OK</span>
+      <span class="meta-value">2 2 UNKNOWN: invalid password</span>
     </div></div>
       
     </div>
 
-    <div class="card healthy">
+    <div class="card skipped">
       <div class="card-header">
         <span class="card-name">Identity GraphQL — me query</span>
-        <span class="badge healthy">Healthy</span>
+        <span class="badge skipped">Skipped</span>
       </div>
       <div class="card-meta">
     <div class="meta-row">
@@ -278,16 +278,8 @@
     <div class="meta-row">
       <span class="meta-label">Endpoint</span>
       <span class="meta-value url">http://localhost:8092/graphql</span>
-    </div>
-    <div class="meta-row">
-      <span class="meta-label">Response time</span>
-      <span class="meta-value">11 ms</span>
-    </div>
-    <div class="meta-row">
-      <span class="meta-label">HTTP status</span>
-      <span class="meta-value">200</span>
     </div></div>
-      <div class="card-info">Authenticated as: <strong>riyacv1@gmail.com</strong></div>
+      <div class="card-skip">No access token — gRPC Login did not return a token</div>
     </div>
   </div>
 
@@ -295,6 +287,8 @@
   <div class="issues">
     <ul>
       <li class="issue"><strong>Upload service:</strong> HTTP 405. </li>
+      <li class="issue"><strong>Identity gRPC server:</strong> gRPC code 2 — 2 UNKNOWN: invalid password. Ensure the container is running and port 8096 is reachable.</li>
+      <li class="warning"><strong>Identity GraphQL — me query:</strong> No access token — gRPC Login did not return a token</li>
     </ul>
   </div>
 
