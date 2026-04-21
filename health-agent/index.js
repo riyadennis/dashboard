@@ -355,19 +355,36 @@ console.log("Report ready.");
 
 // --- Serve the report ---
 
+const MIME_TYPES = {
+  ".html": "text/html; charset=utf-8",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".css": "text/css; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+};
+
 const server = createServer(async (req, res) => {
-  if (req.url === "/" || req.url === "/health.html") {
-    try {
-      const page = await readFile(REPORT_PATH, "utf-8");
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-      res.end(page);
-    } catch {
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Health report not found.");
-    }
-  } else {
-    res.writeHead(301, { Location: "/" });
-    res.end();
+  const url = req.url === "/" ? "/health.html" : req.url;
+
+  // Only serve known static files from health-agent directory
+  const safeName = url.replace(/^\//, "").replace(/[^a-zA-Z0-9._-]/g, "");
+  const ext = safeName.substring(safeName.lastIndexOf("."));
+  const mime = MIME_TYPES[ext];
+
+  if (!mime) {
+    res.writeHead(404, { "Content-Type": "text/plain" });
+    res.end("Not found");
+    return;
+  }
+
+  try {
+    const filePath = resolve(__dirname, safeName);
+    const content = await readFile(filePath);
+    res.writeHead(200, { "Content-Type": mime });
+    res.end(content);
+  } catch {
+    res.writeHead(404, { "Content-Type": "text/plain" });
+    res.end("Not found");
   }
 });
 
