@@ -33,6 +33,8 @@ class DashBoard extends React.Component{
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('userID');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userName');
         // Reset state
         this.setState({
             isLoggedIn: false,
