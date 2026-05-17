@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client/react";
 import { gql } from '@apollo/client';
-import React from "react";
+import React, { useEffect } from "react";
 
 const ME = gql`
   query Me {
@@ -23,12 +23,14 @@ const GET_USER_ROLE = gql`
   }
 `;
 
-function TimeOfDay() {
+function TimeOfDay({ onRoleLoaded }) {
     const token = localStorage.getItem('accessToken');
     const authHeaders = { authorization: token ? `Bearer ${token}` : '' };
 
     const { data, loading, error } = useQuery(ME, {
         context: { headers: authHeaders },
+        skip: !token,
+        fetchPolicy: 'network-only',
         onCompleted: (data) => {
             if (data?.me) {
                 localStorage.setItem("userID", data.me.id);
@@ -46,16 +48,22 @@ function TimeOfDay() {
     const { data: roleData, loading: roleLoading } = useQuery(GET_USER_ROLE, {
         variables: { userId },
         context: { headers: authHeaders },
-        skip: !userId,
-        onCompleted: (data) => {
-            if (data?.getUserRole?.role) {
-                localStorage.setItem("userRole", data.getUserRole.role);
-            }
-        },
+        skip: !token || !userId,
+        fetchPolicy: 'network-only',
         onError: (error) => {
             console.error("GetUserRole query error:", error);
         }
     });
+
+    useEffect(() => {
+        const role = roleData?.getUserRole?.role;
+        if (role) {
+            localStorage.setItem("userRole", role);
+            if (onRoleLoaded) {
+                onRoleLoaded(role);
+            }
+        }
+    }, [roleData, onRoleLoaded]);
 
     const date = new Date();
     const hours = date.getHours();

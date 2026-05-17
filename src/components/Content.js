@@ -6,12 +6,27 @@ import Button from "react-bootstrap/Button";
 import TimeOfDay from "./Profile";
 import FileUploader from "./FileUploader";
 import PolicyCreator from "./PolicyCreator";
-
-
+import Admin from "./Admin";
 
 
 class Content extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            isAdmin: (localStorage.getItem('userRole') || '').toUpperCase() === 'ADMIN',
+        };
+        this.handleRoleLoaded = this.handleRoleLoaded.bind(this);
+    }
+
+    handleRoleLoaded(role) {
+        this.setState({
+            isAdmin: (role || '').toUpperCase() === 'ADMIN',
+        });
+    }
+
     render() {
+        const { isAdmin } = this.state;
+
         return(
             <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
                 <Tab eventKey="home" title="Home">
@@ -37,13 +52,22 @@ class Content extends React.Component{
                 <Tab eventKey="profile" title="Profile">
                     <Card>
                         <Card.Body>
-                            <Card.Title> <TimeOfDay/></Card.Title>
+                            <Card.Title> <TimeOfDay onRoleLoaded={this.handleRoleLoaded}/></Card.Title>
                             <Card.Text>
                                 {this.props.userData.message}
                             </Card.Text>
                         </Card.Body>
                     </Card>
                 </Tab>
+                {isAdmin && (
+                    <Tab eventKey="admin" title="Admin">
+                        <Card>
+                            <Card.Body>
+                                <Admin/>
+                            </Card.Body>
+                        </Card>
+                    </Tab>
+                )}
                 <Tab eventKey="contact" title="Contact" disabled>
                     <Card>
                         <Card.Img variant="top" src="holder.js/100px180" />
