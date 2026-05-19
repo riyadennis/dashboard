@@ -4,7 +4,8 @@ import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 
 function RegisterForm(props) {
-    const { fields, handleChange, handleSubmit, loading, error, onDismissError, success, onLoginClick } = props;
+    const { fields, handleChange, handleSubmit, loading, error, onDismissError, success, onLoginClick,
+        submitLabel = "Register", successMessage, showTerms = true } = props;
 
     return (
         <Form style={{ border: "1px solid #000", padding: "30px", margin: "10px", borderRadius: "10px", width: "50%", marginLeft: "auto", marginRight: "auto" }}>
@@ -18,7 +19,7 @@ function RegisterForm(props) {
 
             {success && (
                 <Alert variant="success">
-                    Registration successful! You can now <Alert.Link onClick={onLoginClick} style={{ cursor: "pointer" }}>sign in</Alert.Link>.
+                    {successMessage || (<>Registration successful! You can now <Alert.Link onClick={onLoginClick} style={{ cursor: "pointer" }}>sign in</Alert.Link>.</>)}
                 </Alert>
             )}
 
@@ -92,27 +93,31 @@ function RegisterForm(props) {
                 />
             </Form.Group>
 
-            <Form.Group controlId="regTerms" style={{ margin: "10px 0" }}>
-                <Form.Check
-                    type="checkbox"
-                    name="terms"
-                    label="I agree to the terms and conditions"
-                    checked={fields.terms}
-                    onChange={handleChange}
-                    required
-                />
-            </Form.Group>
+            {showTerms && (
+                <Form.Group controlId="regTerms" style={{ margin: "10px 0" }}>
+                    <Form.Check
+                        type="checkbox"
+                        name="terms"
+                        label="I agree to the terms and conditions"
+                        checked={fields.terms}
+                        onChange={handleChange}
+                        required
+                    />
+                </Form.Group>
+            )}
 
-            <Button variant="primary" type="button" onClick={handleSubmit} disabled={loading || !fields.terms}>
-                {loading ? "Registering…" : "Register"}
+            <Button variant="primary" type="button" onClick={handleSubmit} disabled={loading || (showTerms && !fields.terms)}>
+                {loading ? "Submitting…" : submitLabel}
             </Button>
 
-            <div style={{ marginTop: "15px", fontSize: "0.9rem" }}>
-                Already have an account?{" "}
-                <span onClick={onLoginClick} style={{ cursor: "pointer", color: "#0d6efd", textDecoration: "underline" }}>
-                    Sign in
-                </span>
-            </div>
+            {onLoginClick && (
+                <div style={{ marginTop: "15px", fontSize: "0.9rem" }}>
+                    Already have an account?{" "}
+                    <span onClick={onLoginClick} style={{ cursor: "pointer", color: "#0d6efd", textDecoration: "underline" }}>
+                        Sign in
+                    </span>
+                </div>
+            )}
         </Form>
     );
 }

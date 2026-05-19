@@ -3,6 +3,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
 import UserTable from "./UserTable";
+import CreateUser from "./CreateUser";
 
 function AdminPage() {
     return (
@@ -14,6 +15,13 @@ function AdminPage() {
                         <Card.Body>
                             <Card.Title>User Management</Card.Title>
                             <UserTable />
+                        </Card.Body>
+                    </Card>
+                </Tab>
+                <Tab eventKey="create-user" title="Create User">
+                    <Card>
+                        <Card.Body>
+                            <CreateUser />
                         </Card.Body>
                     </Card>
                 </Tab>
